@@ -104,68 +104,73 @@ const Comerciantes = () => {
     comerciantes.forEach((comerciante, index) => {
       const yPos = index * 90 + 10;
       const idUnico = generarIDUnico();
-
+  
       const canvas = document.createElement('canvas');
-      canvas.width = 350;
-      canvas.height = 150;
-
+      canvas.width = 2.086562 * 100; // Convertir pulgadas a píxeles (1 pulgada = 100 píxeles)
+      canvas.height = 3.346458 * 100;
+  
       const ctx = canvas.getContext('2d');
       ctx.fillStyle = '#f9f2f7';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+  
       const qrCodeString = JSON.stringify(comerciante);
-
+  
       ctx.font = 'bold 16px Arial';
       ctx.fillStyle = '#8c52ff';
       ctx.fillText('Sistema Integral de Tianguis', 10, 30);
-
+  
       ctx.font = '14px Arial';
       ctx.fillStyle = '#8c52ff';
       ctx.fillText(` ${comerciante.nombre}`, 10, 60);
       ctx.fillText(` ${idUnico}`, 10, 80);
-
+  
       // Dibujar círculos
       ctx.beginPath();
       ctx.arc(20, 110, 10, 0, Math.PI * 2);
       ctx.fillStyle = '#aa8ed6';
       ctx.fill();
-
+  
       ctx.beginPath();
       ctx.arc(40, 110, 10, 0, Math.PI * 2);
       ctx.fillStyle = '#5e17eb';
       ctx.fill();
-
+  
       ctx.beginPath();
       ctx.arc(60, 110, 10, 0, Math.PI * 2);
       ctx.fillStyle = '#ff66c4';
       ctx.fill();
-
+  
       // Generar código QR con qrious
       const qr = new QRious({
         value: qrCodeString,
         size: 50, // Tamaño del código QR
       });
-
+  
       const qrImg = new Image();
       qrImg.src = qr.toDataURL('image/png');
-
+  
       qrImg.onload = function () {
         ctx.drawImage(qrImg, 200, 40, 110, 100);
-
+  
         const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF();
+        const pdf = new jsPDF({
+          unit: 'mm',
+          format: [2.086562 * 25.4, 3.346458 * 25.4], // Tamaño en milímetros
+          orientation: 'horizontal', // Cambiar a 'vertical' si es necesario
+        });
         pdf.addImage(imgData, 'PNG', 10, yPos + 10, 90, 60);
-
+  
         if (index !== comerciantes.length - 1) {
           pdf.addPage();
         }
-
+  
         if (index === comerciantes.length - 1) {
           pdf.save('comerciantes.pdf');
         }
       };
     });
   };
+  
 
   const generarIDUnico = () => {
     return Math.floor(Math.random() * 1000000);
