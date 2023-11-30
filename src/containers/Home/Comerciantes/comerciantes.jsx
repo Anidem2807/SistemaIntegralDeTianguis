@@ -1,14 +1,15 @@
 
-import React, { useState, useRef } from 'react';
-import Title from '../../../componets/Title';
+import React, { useState, useRef, useEffect } from 'react';
+import Title from '../../../components/Title';
 import { StyledHome, StyledTitle, Styledtarifa, StyledModal, StyledTableWrapper } from './styles';
-import Button from '../../../componets/Button';
+import Button from '../../../components/Button';
 import Menu from '../Menu/Menu';
 import jsPDF from 'jspdf';
 import QRCode from 'qrcode.react';
 import styled from 'styled-components';
 import QRious from 'qrious';
-
+import Axios from "axios";
+import { Box, Flex } from '@chakra-ui/react';
 
 const PrepaidCard = styled.div`
   background-color: #f9f2f7;
@@ -50,6 +51,7 @@ const CardContent = styled.div`
 
 const Comerciantes = () => {
   const [comerciantes, setComerciantes] = useState([]);
+  const [tablaComerciantes, settablaComerciantes] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [nuevaComerciante, setNuevoComerciante] = useState({});
   const [codigoQR, setCodigoQR] = useState('');
@@ -83,16 +85,19 @@ const Comerciantes = () => {
       pagoRealizado: false,
       fechaPago: '',
     };
+    Axios.post('http://localhost:3001/registrarComerciante', {
+      nuevoComerciante: nuevoComercianteConPago,
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
     setComerciantes((prevComerciante) => [...prevComerciante, nuevoComercianteConPago]);
     setCodigoQR(JSON.stringify(nuevoComercianteConPago));
+    listarComerciantes();
     cerrarModal();
-  };
-
-  const realizarPagoFicticio = (comerciante) => {
-    const newComerciantes = comerciantes.map((c) =>
-      c.nombre === comerciante.nombre ? { ...c, pagoRealizado: true, fechaPago: new Date().toLocaleDateString() } : c
-    );
-    setComerciantes(newComerciantes);
   };
 
   const generarPDF = () => {
@@ -166,15 +171,32 @@ const Comerciantes = () => {
     return Math.floor(Math.random() * 1000000);
   };
 
+  const listarComerciantes = () => {
+    Axios.get('http://localhost:3001/registrarComerciante')
+    .then(function (response) {
+      console.log(response.data);
+      settablaComerciantes(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
+  useEffect(() => {
+    listarComerciantes();
+  }, []);
+
   return (
-    <StyledHome>
-      <Menu />
+    <Flex direction={{ base: 'column', md: 'row' }} minHeight="50vh">
+    {/* Menú */}
+    <Menu />
+     {/* Contenido principal */}
+     <Box flex="1" p={{ base: 4, md: 8 }}>
       <StyledTitle>
-        <Title text="Comerciante" />
-      </StyledTitle>
-      <Styledtarifa>
-        <Button onClick={abrirModal}>Agregar Comerciante</Button>
-        <Button className='espacio' onClick={generarPDF}>Generar PDF</Button>
+        <Title text="Comerciantes" />
+      </StyledTitle>      
+      <Button onClick={abrirModal}>Registrar Comerciante</Button>
+        
         <StyledTableWrapper>
           <table ref={tableRef}>
             <thead>
@@ -185,35 +207,17 @@ const Comerciantes = () => {
                 <th>Giro</th>
                 <th>Piso</th>
                 <th>Basura</th>
-                <th>Asistencia</th>
-                <th>Teléfono</th>
-                <th>Pago</th>
-                <th>Código QR</th>
-                <th>Acciones</th>
               </tr>
             </thead>
             <tbody id="comerciantesTable">
-              {comerciantes.map((tarifa, index) => (
+              {tablaComerciantes.map((comerciante, index) => (
                 <tr key={index}>
-                  <td>{tarifa.nombre}</td>
-                  <td>{tarifa.tianguis}</td>
-                  <td>{tarifa.metros}</td>
-                  <td>{tarifa.giro}</td>
-                  <td>{tarifa.piso}</td>
-                  <td>{tarifa.basura}</td>
-                  <td>{tarifa.asistencia}</td>
-                  <td>{tarifa.telefono}</td>
-                  <td>{tarifa.pago}</td>
-                  <td>
-                    <QRCode value={JSON.stringify(tarifa)} />
-                  </td>
-                  <td>
-                    {tarifa.pagoRealizado ? (
-                      <img src="icono-palomita.png" alt="Pago realizado" />
-                    ) : (
-                      <Button onClick={() => realizarPagoFicticio(tarifa)}>Realizar Pago Ficticio</Button>
-                    )}
-                  </td>
+                  <td>{comerciante.nombre}</td>
+                  <td>{comerciante.tianguis}</td>
+                  <td>{comerciante.metros}</td>
+                  <td>{comerciante.giro}</td>
+                  <td>{comerciante.piso}</td>
+                  <td>{comerciante.basura}</td>
                 </tr>
               ))}
             </tbody>
@@ -289,8 +293,8 @@ const Comerciantes = () => {
             <Button onClick={cerrarModal}>Cancelar</Button>
           </StyledModal>
         )}
-      </Styledtarifa>
-    </StyledHome>
+ </Box>
+    </Flex>
   );
 };
 
