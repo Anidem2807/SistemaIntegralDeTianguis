@@ -38,19 +38,24 @@ const menuDefault = [
 ];
 
 const Menu = () => (
-<Box bg="linear-gradient(90deg, rgba(210,186,219,1) 0%, rgba(172,136,181,1) 35%, rgba(147,172,203,1) 100%)" // Cambia el fondo aquí
- w={{ base: '100%', md: '250px' }} minH="60vh" p={4}>
-  <Stack spacing={6}>
-    <Image src={logo} className='logo' alt='logo' maxWidth="60px" maxHeight="60px" /> {/* Ajusta maxHeight a tu preferencia */}
-    {menuDefault.map((item, index) => (
-      <MenuItem
-        key={index}
-        displayName={item.displayName}
-        path={item.path}
-        icon={item.icon}
-      />
-    ))}
-  </Stack>
+<Box
+    borderRadius='40px' mr='10px' bg="linear-gradient(90deg, rgba(210,186,219,1) 0%, rgba(172,136,181,1) 35%, rgba(147,172,203,1) 100%)"
+    w={{ base: '100%', md: '250px' }}
+    minH="60vh"
+    p={4}
+>
+    <Stack spacing={6}>
+        <Image src={logo} className='logo' alt='logo' maxWidth="120px" maxHeight="120px" />
+        {menuDefault.map((item, index) => (
+            <MenuItem
+                key={index}
+                displayName={item.displayName}
+                path={item.path}
+                icon={item.icon}
+            />
+        ))}
+    </Stack>
+    
 </Box>
 
 );

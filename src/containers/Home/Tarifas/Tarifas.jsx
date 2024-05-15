@@ -43,7 +43,7 @@ const Empresa = () => {
   };
 
   const agregarTarifa = () => {
-    Axios.post('http://localhost:3001/registrarTarifa', {nuevaTarifa:nuevaTarifa})
+    Axios.post('https://node.sistemaintegraldetianguis.com/registrarTarifa', {nuevaTarifa:nuevaTarifa})
     .then(handleSuccess)
     .catch(handleError);
   }
@@ -61,7 +61,7 @@ const Empresa = () => {
   }
  
   const listarTarifa = () => {
-    Axios.get('http://localhost:3001/listarTarifa')
+    Axios.get('https://node.sistemaintegraldetianguis.com/listarTarifa')
       .then(function (response) {
         setTarifas(response.data);
       })
