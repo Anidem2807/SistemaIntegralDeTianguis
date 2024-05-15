@@ -2,17 +2,18 @@ import styled from 'styled-components';
 
 const StyledHome = styled.div`
   display: flex;
-  height:950px;
+  height: 950px;
   padding: 20px;
   box-sizing: border-box;
   flex-direction: column;
-  background:white;
-  }
+  background: white;
 `;
+
 const StyledTitle = styled.div`
-  margin-top:-950px;
-  margin-left:320px;
-  }
+  /* Ajusta o elimina estos márgenes para asegurarte de que el título esté visible */
+  margin-top: 20px;
+  margin-left: 0;
+  text-align: center; /* Alinea el título al centro */
 `;
 
 const StyledTableWrapper = styled.div`
@@ -21,6 +22,7 @@ const StyledTableWrapper = styled.div`
   font-size: 18px;
   max-width: 100%;
   margin: 20px auto;
+  color: black; /* Asegura que el color del texto sea visible */
 
   table {
     width: 100%;
@@ -42,4 +44,4 @@ const StyledTableWrapper = styled.div`
   }
 `;
 
-export { StyledHome,StyledTitle, StyledTableWrapper };
+export { StyledHome, StyledTitle, StyledTableWrapper };

@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import QRious from 'qrious';
 import Axios from "axios";
 import { Box, Flex } from '@chakra-ui/react';
+import ChatbotWrapper from '../../../components/ChatbotWrapper';
 
 const PrepaidCard = styled.div`
   background-color: #f9f2f7;
@@ -293,6 +294,7 @@ const Comerciantes = () => {
             <Button onClick={cerrarModal}>Cancelar</Button>
           </StyledModal>
         )}
+        <ChatbotWrapper />
  </Box>
     </Flex>
   );

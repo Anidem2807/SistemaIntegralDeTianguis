@@ -16,6 +16,7 @@ import QRious from 'qrious';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { Box, Flex } from '@chakra-ui/react';
+import ChatbotWrapper from '../../../components/ChatbotWrapper';
 
 const Pagos = () => {
   const [comerciantes, setComerciantes] = useState([]);
@@ -384,6 +385,7 @@ const Pagos = () => {
             <Button onClick={cerrarModal}>Cancelar</Button>
           </StyledModalPago>
         )}
+        <ChatbotWrapper />
     </Box>
     </Flex>
   );

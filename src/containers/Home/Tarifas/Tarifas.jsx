@@ -11,6 +11,7 @@ import {
 import { Box, Flex } from '@chakra-ui/react';
 import Menu from '../Menu/Menu';
 import Button from '../../../components/Button';
+import ChatbotWrapper from '../../../components/ChatbotWrapper';
 
 const Empresa = () => {
   const [tarifas, setTarifas] = useState([]);
@@ -136,6 +137,7 @@ const Empresa = () => {
             <Button onClick={agregarTarifa}>Agregar</Button>
             <Button onClick={cerrarModal}>Cancelar</Button>
           </StyledModal>    )}   
+          <ChatbotWrapper />
       </Box>
     </Flex>
   );
